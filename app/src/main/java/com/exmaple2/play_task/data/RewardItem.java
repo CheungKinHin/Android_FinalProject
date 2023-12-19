@@ -28,4 +28,13 @@ public class RewardItem implements Serializable {
     public void setChecked(boolean checked) {
         isChecked = checked;
     }
+    // 构造函数、getter 和 setter
+
+    public String getDescription() {
+        return "奖励: " + name;
+    }
+
+    public int getScoreChange() {
+        return -score; // 奖励减少分数
+    }
 }

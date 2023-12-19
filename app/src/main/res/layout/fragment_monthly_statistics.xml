@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 标题 TextView -->
+    <TextView
+        android:id="@+id/chart_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:text="统计图表"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    <!-- SimpleLineChartView 图表 -->
+    <com.exmaple2.play_task.view.SimpleLineChartView
+        android:id="@+id/chart_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp" /> <!-- 确保图表在标题下方 -->
+
+</FrameLayout>

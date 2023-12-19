@@ -2,17 +2,20 @@ package com.exmaple2.play_task;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.exmaple2.play_task.data.SharedViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
     private SharedViewModel sharedViewModel;
@@ -83,4 +86,42 @@ public class MainActivity extends AppCompatActivity {
             return NUM_TABS;
         }
     }
+    @Override
+    public void onBackPressed() {
+        // 获取当前显示的Fragment
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (currentFragment instanceof BillFragment) {
+            // 当前是BillFragment时，执行回退操作
+            super.onBackPressed();
+            // 调用方法显示统计界面的内容
+            showStatisticsContent();
+        } else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            // 如果回退栈中还有其他Fragment，则正常处理回退操作
+            getSupportFragmentManager().popBackStack();
+        } else {
+            // 否则，执行默认的回退操作
+            super.onBackPressed();
+        }
+    }
+
+    // MainActivity中的 showStatisticsContent() 方法
+    public void showStatisticsContent() {
+        // 显示ViewPager和TabLayout
+        ViewPager2 viewPager = findViewById(R.id.view_pager);
+        TabLayout tabLayout = findViewById(R.id.tab_layout_statistics);
+        if (viewPager != null && tabLayout != null) {
+            viewPager.setVisibility(View.VISIBLE);
+            tabLayout.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    // 用于加载StatisticsFragment的方法
+    public void loadStatisticsFragment() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, new StatisticsFragment(), "StatisticsFragmentTag");
+        transaction.addToBackStack(null); // 将其加入到返回栈中
+        transaction.commit();
+    }
+
 }

@@ -18,15 +18,15 @@ import com.exmaple2.play_task.data.TaskName;
 import java.util.ArrayList;
 
 public class MajorTaskFragment extends Fragment {
-    private ArrayList<TaskName> MajorTasks = new ArrayList<>();
+    private ArrayList<TaskName> majorTasks = new ArrayList<>();
     private TaskAdapter taskAdapter;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DataBank dataBank = new DataBank();
-        MajorTasks = dataBank.loadTasks(getContext(), "Major_tasks.data");
+        majorTasks = dataBank.loadTasks(getContext(), "Major_tasks.data");
     }
     public void setTasks(ArrayList<TaskName> tasks) {
-        this.MajorTasks = tasks;
+        this.majorTasks = tasks;
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class MajorTaskFragment extends Fragment {
         RecyclerView mainRecyclerView = rootView.findViewById(R.id.recyclerview_major);
         mainRecyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
-        taskAdapter = new TaskAdapter(MajorTasks, this::showCompleteTaskDialog);
+        taskAdapter = new TaskAdapter(majorTasks, this::showCompleteTaskDialog);
         mainRecyclerView.setAdapter(taskAdapter);
 
         return rootView;
@@ -60,17 +60,20 @@ public class MajorTaskFragment extends Fragment {
     }
 
     private void completeTask(int position) {
-        TaskName completedTask = MajorTasks.get(position);
-        MajorTasks.remove(position);
+        TaskName completedTask = majorTasks.get(position);
+        int score = completedTask.getScore(); // 直接获取分数，无需转换
+
+        majorTasks.remove(position);
         taskAdapter.notifyItemRemoved(position);
         if (taskCompletedListener != null) {
-            taskCompletedListener.onTaskCompleted(Integer.parseInt(completedTask.getScore()));
+            taskCompletedListener.onTaskCompleted(score);
         }
-        new DataBank().saveTasks(getContext(), MajorTasks, "Major_tasks.data"); // 保存当前任务列表
+
+        new DataBank().saveTasks(getContext(), majorTasks, "daily_tasks.data"); // 保存当前任务列表
     }
     public void addTask(TaskName task) {
-        MajorTasks.add(task);
+        majorTasks.add(task);
         taskAdapter.notifyDataSetChanged();
-        new DataBank().saveTasks(getContext(), MajorTasks, "Major_tasks.data"); // 保存当前任务列表
+        new DataBank().saveTasks(getContext(), majorTasks, "Major_tasks.data"); // 保存当前任务列表
     }
 }

@@ -108,7 +108,13 @@ public class TaskFragment extends Fragment {
 
         builder.setPositiveButton("添加", (dialog, which) -> {
             String name = taskNameEditText.getText().toString();
-            String score = taskScoreEditText.getText().toString();
+            int score = 0;
+            try {
+                score = Integer.parseInt(taskScoreEditText.getText().toString());
+            } catch (NumberFormatException e) {
+                // 处理错误，如弹出提示或设置默认值
+                score = 0; // 示例：设置为0
+            }
             TaskName newTask = new TaskName(name, score);
 
             Fragment currentFragment = taskPagerAdapter.createFragment(currentTab);
@@ -124,6 +130,7 @@ public class TaskFragment extends Fragment {
         builder.setNegativeButton("取消", (dialog, which) -> dialog.cancel());
         builder.show();
     }
+
 
     private String getTask(int position) {
         switch (position) {

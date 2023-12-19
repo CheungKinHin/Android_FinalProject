@@ -60,9 +60,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         TaskName task = localDataSet.get(position);
         viewHolder.textViewTaskName.setText(task.getTitle());
-        // 设置任务分数和复选框的状态
-        // viewHolder.textViewScore.setText("+" + task.getScore());
-        viewHolder.textViewScore.setText(task.getScore());
+        // 将 int 类型的分数转换为字符串
+        viewHolder.textViewScore.setText(String.valueOf(task.getScore()));
 
         // 设置点击监听器
         viewHolder.itemView.setOnClickListener(v -> {
@@ -71,5 +70,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             }
         });
     }
+
 }
 

@@ -111,20 +111,40 @@ public class BonusFragment extends Fragment {
 
     private void removeCheckedItems() {
         int scoreToDeduct = 0;
-        for (int i = rewardsList.size() - 1; i >= 0; i--) {
-            if (rewardsList.get(i).isChecked()) {
-                scoreToDeduct += rewardsList.get(i).getScore();
-                rewardsList.remove(i);
+        for (RewardItem item : rewardsList) {
+            if (item.isChecked()) {
+                scoreToDeduct += item.getScore();
             }
         }
-        rewardsAdapter.notifyDataSetChanged();
 
-        int newTotalScore = sharedViewModel.getTotalScore().getValue() - scoreToDeduct;
-        sharedViewModel.setTotalScore(newTotalScore); // 更新 ViewModel 中的分数
-        new DataBank().saveScore(getContext(), newTotalScore); // 保存新的分数到持久化存储
+        Integer currentScore = sharedViewModel.getTotalScore().getValue();
+        if (currentScore != null && currentScore >= scoreToDeduct) {
+            // 执行扣分操作
+            for (int i = rewardsList.size() - 1; i >= 0; i--) {
+                if (rewardsList.get(i).isChecked()) {
+                    rewardsList.remove(i);
+                }
+            }
+            rewardsAdapter.notifyDataSetChanged();
 
-        new DataBank().saveRewards(getContext(), new ArrayList<>(rewardsList)); // 更新奖励数据
+            int newTotalScore = currentScore - scoreToDeduct;
+            sharedViewModel.setTotalScore(newTotalScore);
+            new DataBank().saveScore(getContext(), newTotalScore);
+            new DataBank().saveRewards(getContext(), new ArrayList<>(rewardsList));
+        } else {
+            // 弹出信息框提示分数不够
+            showInsufficientScoreDialog();
+        }
     }
+
+    private void showInsufficientScoreDialog() {
+        new AlertDialog.Builder(getContext())
+                .setTitle("分数不足")
+                .setMessage("分数不够兑换选中的奖励。")
+                .setPositiveButton("确定", null)
+                .show();
+    }
+
 
 
     private void resetCheckedItems() {

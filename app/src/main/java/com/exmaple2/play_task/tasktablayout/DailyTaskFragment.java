@@ -63,14 +63,18 @@ public class DailyTaskFragment extends Fragment {
 
     private void completeTask(int position) {
         TaskName completedTask = dailyTasks.get(position);
+        int score = completedTask.getScore(); // 直接获取分数，无需转换
+
         dailyTasks.remove(position);
         taskAdapter.notifyItemRemoved(position);
         if (taskCompletedListener != null) {
-            taskCompletedListener.onTaskCompleted(Integer.parseInt(completedTask.getScore()));
+            taskCompletedListener.onTaskCompleted(score);
         }
 
         new DataBank().saveTasks(getContext(), dailyTasks, "daily_tasks.data"); // 保存当前任务列表
     }
+
+
     public void addTask(TaskName task) {
         dailyTasks.add(task);
         taskAdapter.notifyDataSetChanged();

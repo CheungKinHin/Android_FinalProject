@@ -11,36 +11,6 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class DataBank {
-    /*final String DATA_FILENAME = "tasknames.data";
-    public ArrayList<TaskName> LoadTaskNames(Context context) {
-        ArrayList<TaskName> data = new ArrayList<>();
-        try {
-            FileInputStream fileIn = context.openFileInput(DATA_FILENAME);
-            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
-            data = (ArrayList<TaskName>) objectIn.readObject();
-            objectIn.close();
-            fileIn.close();
-
-            Log.d("Ser1alization", "Data loaded successfully.book count " + data.size());
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return data;
-    }
-
-    public void SaveTaskNames(Context context, ArrayList<TaskName> booknames) {
-        try{
-            //打开内部文件
-            FileOutputStream fileOut = context.openFileOutput(DATA_FILENAME,Context.MODE_PRIVATE);
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(booknames);
-            out.close();
-            fileOut.close();
-            Log.d("Serialization","Data is serialized and saved.");
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-    }*/
     final String SCORE_FILENAME = "score.data";
 
     public void saveScore(Context context, int score) {
@@ -122,6 +92,66 @@ public class DataBank {
             e.printStackTrace();
         }
         return rewards;
+    }
+
+// 在 DataBank 类中
+
+    final String STATISTICS_FILENAME = "statistics.data";
+
+    public void saveStatistics(Context context, StatisticsData statisticsData) {
+        try {
+            FileOutputStream fileOut = context.openFileOutput(STATISTICS_FILENAME, Context.MODE_PRIVATE);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(statisticsData);
+            out.close();
+            fileOut.close();
+            Log.d("Serialization", "Statistics data are serialized and saved.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public StatisticsData loadStatistics(Context context) {
+        StatisticsData statisticsData = new StatisticsData(); // 默认空统计数据
+        try {
+            FileInputStream fileIn = context.openFileInput(STATISTICS_FILENAME);
+            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+            statisticsData = (StatisticsData) objectIn.readObject();
+            objectIn.close();
+            fileIn.close();
+            Log.d("Serialization", "Statistics data loaded successfully.");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return statisticsData;
+    }
+    final String BILL_FILENAME = "bills.data";
+    public void saveBills(Context context, ArrayList<BillItem> bills) {
+        try {
+            FileOutputStream fileOut = context.openFileOutput(BILL_FILENAME, Context.MODE_PRIVATE);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(bills);
+            out.close();
+            fileOut.close();
+            Log.d("DataBank", "Bills saved successfully.");
+        } catch (IOException e) {
+            Log.e("DataBank", "Error saving bills", e);
+        }
+    }
+
+    public ArrayList<BillItem> loadBills(Context context) {
+        ArrayList<BillItem> bills = new ArrayList<>();
+        try {
+            FileInputStream fileIn = context.openFileInput(BILL_FILENAME);
+            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+            bills = (ArrayList<BillItem>) objectIn.readObject();
+            objectIn.close();
+            fileIn.close();
+            Log.d("DataBank", "Bills loaded successfully.");
+        } catch (IOException | ClassNotFoundException e) {
+            Log.e("DataBank", "Error loading bills", e);
+        }
+        return bills;
     }
 
 }

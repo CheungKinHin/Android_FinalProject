@@ -61,12 +61,15 @@ public class WeeklyTaskFragment extends Fragment {
 
     private void completeTask(int position) {
         TaskName completedTask = weeklyTasks.get(position);
+        int score = completedTask.getScore(); // 直接获取分数，无需转换
+
         weeklyTasks.remove(position);
         taskAdapter.notifyItemRemoved(position);
         if (taskCompletedListener != null) {
-            taskCompletedListener.onTaskCompleted(Integer.parseInt(completedTask.getScore()));
+            taskCompletedListener.onTaskCompleted(score);
         }
-        new DataBank().saveTasks(getContext(), weeklyTasks, "weekly_tasks.data"); // 保存当前任务列表
+
+        new DataBank().saveTasks(getContext(), weeklyTasks, "daily_tasks.data"); // 保存当前任务列表
     }
     public void addTask(TaskName task) {
         weeklyTasks.add(task);

@@ -12,6 +12,7 @@
     <string name="statistics">统计</string>
     <string name="task">任务\n</string>
     <string name="total_score">0</string>
+    <string name="back">返回</string>
 
 
 </resources>

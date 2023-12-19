@@ -5,20 +5,29 @@ import java.io.Serializable;
 public class TaskName implements Serializable {
 
 
-    private final String score;
+    private int score;
     private String name;
     public String getTitle() {
         return name;
     }
-    public String getScore() {
+    public int getScore() {
         return score;
     }
-    public TaskName(String name_, String s) {
+    public TaskName(String name_, int s) {
         this.name=name_;
         this.score=s;
     }
     public void setName(String name) {
         this.name = name;
     }
+    // 构造函数、getter 和 setter
 
+    public String getDescription() {
+        return "任务: " + name;
+    }
+
+    public int getScoreChange() {
+        return  score; // 任务增加分数
+    }
 }
+
